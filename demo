@@ -1,1 +1,311 @@
+-- ==========================================
+-- TẠO DATABASE
+-- ==========================================
 
+CREATE DATABASE movie_booking;
+USE movie_booking;
+
+-- ==========================================
+-- BẢNG NGƯỜI DÙNG
+-- ==========================================
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin','user') DEFAULT 'user'
+);
+
+-- ==========================================
+-- BẢNG PHIM
+-- ==========================================
+
+CREATE TABLE movies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    genre VARCHAR(100),
+    duration INT,
+    director VARCHAR(100),
+    actors TEXT,
+    description TEXT,
+    poster VARCHAR(255)
+);
+
+-- ==========================================
+-- BẢNG PHÒNG CHIẾU
+-- ==========================================
+
+CREATE TABLE rooms (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_name VARCHAR(50),
+    total_seats INT
+);
+
+-- ==========================================
+-- BẢNG GHẾ
+-- ==========================================
+
+CREATE TABLE seats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_id INT,
+    seat_name VARCHAR(10),
+    status ENUM('available','booked') DEFAULT 'available',
+
+    FOREIGN KEY(room_id)
+    REFERENCES rooms(id)
+);
+
+-- ==========================================
+-- BẢNG SUẤT CHIẾU
+-- ==========================================
+
+CREATE TABLE showtimes (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    movie_id INT,
+
+    room_id INT,
+
+    show_date DATE,
+
+    show_time TIME,
+
+    price INT,
+
+    FOREIGN KEY(movie_id)
+    REFERENCES movies(id),
+
+    FOREIGN KEY(room_id)
+    REFERENCES rooms(id)
+
+);
+
+-- ==========================================
+-- BẢNG ĐẶT VÉ
+-- ==========================================
+
+CREATE TABLE bookings (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT,
+
+    showtime_id INT,
+
+    seat_id INT,
+
+    booking_date DATETIME,
+
+    total_price INT,
+
+    status ENUM('Paid','Unpaid'),
+
+    FOREIGN KEY(user_id)
+    REFERENCES users(id),
+
+    FOREIGN KEY(showtime_id)
+    REFERENCES showtimes(id),
+
+    FOREIGN KEY(seat_id)
+    REFERENCES seats(id)
+
+);
+
+-- ==========================================
+-- BẢNG THANH TOÁN
+-- ==========================================
+
+CREATE TABLE payments (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    booking_id INT,
+
+    payment_method VARCHAR(50),
+
+    amount INT,
+
+    payment_date DATETIME,
+
+    FOREIGN KEY(booking_id)
+    REFERENCES bookings(id)
+
+);
+
+-- ==========================================
+-- ADMIN
+-- password: admin123
+-- (tạm thời để chuỗi, sau sẽ mã hóa bằng Flask)
+-- ==========================================
+
+INSERT INTO users
+(fullname,email,phone,password,role)
+
+VALUES
+
+(
+'Administrator',
+'admin@gmail.com',
+'0123456789',
+'admin123',
+'admin'
+);
+
+-- ==========================================
+-- PHÒNG CHIẾU
+-- ==========================================
+
+INSERT INTO rooms(room_name,total_seats)
+
+VALUES
+
+('Phòng 1',25),
+
+('Phòng 2',25);
+
+-- ==========================================
+-- PHIM
+-- ==========================================
+
+INSERT INTO movies
+
+(title,genre,duration,director,actors,description,poster)
+
+VALUES
+
+(
+'John Wick 4',
+'Action',
+169,
+'Chad Stahelski',
+'Keanu Reeves',
+'Siêu sát thủ John Wick trở lại.',
+'johnwick.jpg'
+),
+
+(
+'Avengers Endgame',
+'Marvel',
+181,
+'Anthony Russo',
+'Robert Downey Jr',
+'Cuộc chiến cuối cùng của Avengers.',
+'endgame.jpg'
+),
+
+(
+'Spider Man No Way Home',
+'Marvel',
+148,
+'Jon Watts',
+'Tom Holland',
+'Đa vũ trụ mở ra.',
+'spiderman.jpg'
+);
+
+-- ==========================================
+-- GHẾ PHÒNG 1
+-- ==========================================
+
+INSERT INTO seats(room_id,seat_name)
+
+VALUES
+
+(1,'A1'),
+(1,'A2'),
+(1,'A3'),
+(1,'A4'),
+(1,'A5'),
+
+(1,'B1'),
+(1,'B2'),
+(1,'B3'),
+(1,'B4'),
+(1,'B5'),
+
+(1,'C1'),
+(1,'C2'),
+(1,'C3'),
+(1,'C4'),
+(1,'C5'),
+
+(1,'D1'),
+(1,'D2'),
+(1,'D3'),
+(1,'D4'),
+(1,'D5'),
+
+(1,'E1'),
+(1,'E2'),
+(1,'E3'),
+(1,'E4'),
+(1,'E5');
+
+-- ==========================================
+-- GHẾ PHÒNG 2
+-- ==========================================
+
+INSERT INTO seats(room_id,seat_name)
+
+SELECT
+
+2,
+
+seat_name
+
+FROM seats
+
+WHERE room_id=1;
+
+-- ==========================================
+-- SUẤT CHIẾU
+-- ==========================================
+
+INSERT INTO showtimes
+
+(movie_id,room_id,show_date,show_time,price)
+
+VALUES
+
+(1,1,'2026-07-10','18:30:00',120000),
+
+(2,1,'2026-07-10','21:00:00',150000),
+
+(3,2,'2026-07-11','19:00:00',130000);
+MovieBookingSystem/
+│
+├── app.py
+├── config.py
+├── requirements.txt
+├── database.sql
+│
+├── static/
+│   ├── css/
+│   │     style.css
+│   ├── js/
+│   │     script.js
+│   ├── images/
+│   │
+│   └── uploads/
+│
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── movies.html
+│   ├── movie_detail.html
+│   ├── booking.html
+│   ├── payment.html
+│   ├── history.html
+│   │
+│   └── admin/
+│        ├── dashboard.html
+│        ├── movie_list.html
+│        ├── add_movie.html
+│        └── edit_movie.html
+│
+└── venv/
