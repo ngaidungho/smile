@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Đặt vé phim: {{ movie.title }}</h2>
+
+<div class="card shadow p-4">
+
+    <p><b>Thể loại:</b> {{ movie.genre }}</p>
+    <p><b>Thời lượng:</b> {{ movie.duration }} phút</p>
+
+    <hr>
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label>Chọn suất chiếu</label>
+            <select class="form-control" name="showtime" required>
+                <option value="09:00">09:00</option>
+                <option value="13:30">13:30</option>
+                <option value="18:00">18:00</option>
+                <option value="21:30">21:30</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Chọn ghế</label>
+
+            <input type="hidden" name="seat" id="selectedSeat" required>
+
+            <div class="seat-box">
+                {% for row in ["A", "B", "C", "D"] %}
+                    <div class="mb-2">
+                        {% for num in range(1, 6) %}
+                            {% set seat_name = row ~ num %}
+
+                            {% if seat_name in booked_seats %}
+                                <button type="button" class="btn btn-danger m-1" disabled>
+                                    {{ seat_name }}
+                                </button>
+                            {% else %}
+                                <button type="button"
+                                        class="btn btn-outline-primary m-1 seat-btn"
+                                        onclick="chooseSeat('{{ seat_name }}', this)">
+                                    {{ seat_name }}
+                                </button>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <p>
+            Ghế đã chọn:
+            <b id="seatText">Chưa chọn</b>
+        </p>
+
+        <button class="btn btn-danger w-100">
+            Xác nhận đặt vé
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
