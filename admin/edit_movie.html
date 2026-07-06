@@ -1,54 +1,73 @@
-@app.route("/admin/movies/edit/<int:movie_id>", methods=["GET", "POST"])
-def admin_edit_movie(movie_id):
-    if not is_admin():
-        flash("Bạn không có quyền truy cập!", "danger")
-        return redirect(url_for("home"))
+{% extends "base.html" %}
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
+{% block content %}
 
-    cursor.execute("SELECT * FROM movies WHERE id=%s", (movie_id,))
-    movie = cursor.fetchone()
+<div class="container mt-4">
 
-    if movie is None:
-        cursor.close()
-        conn.close()
-        flash("Không tìm thấy phim!", "danger")
-        return redirect(url_for("admin_movies"))
+<h2>✏️ Cập nhật phim</h2>
 
-    if request.method == "POST":
-        title = request.form["title"]
-        genre = request.form["genre"]
-        duration = request.form["duration"]
-        release_date = request.form["release_date"]
-        description = request.form["description"]
+<form method="POST">
 
-        poster_file = request.files.get("poster")
+<div class="mb-3">
+<label>Tên phim</label>
+<input
+class="form-control"
+name="title"
+value="{{ movie.title }}">
+</div>
 
-        if poster_file and poster_file.filename != "":
-            poster_path = os.path.join(app.config["UPLOAD_FOLDER"], poster_file.filename)
-            poster_file.save(poster_path)
-            poster = "/" + poster_path.replace("\\", "/")
-        else:
-            poster = movie["poster"]
+<div class="mb-3">
+<label>Thể loại</label>
+<input
+class="form-control"
+name="genre"
+value="{{ movie.genre }}">
+</div>
 
-        cursor.execute(
-            """
-            UPDATE movies
-            SET title=%s, genre=%s, duration=%s, release_date=%s, description=%s, poster=%s
-            WHERE id=%s
-            """,
-            (title, genre, duration, release_date, description, poster, movie_id)
-        )
+<div class="mb-3">
+<label>Thời lượng</label>
+<input
+class="form-control"
+name="duration"
+value="{{ movie.duration }}">
+</div>
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+<div class="mb-3">
+<label>Ngày khởi chiếu</label>
+<input
+type="date"
+class="form-control"
+name="release_date"
+value="{{ movie.release_date }}">
+</div>
 
-        flash("Cập nhật phim thành công!", "success")
-        return redirect(url_for("admin_movies"))
+<div class="mb-3">
+<label>Mô tả</label>
+<textarea
+class="form-control"
+rows="5"
+name="description">{{ movie.description }}</textarea>
+</div>
 
-    cursor.close()
-    conn.close()
+<div class="mb-3">
+<label>Poster</label>
+<input
+class="form-control"
+name="poster"
+value="{{ movie.poster }}">
+</div>
 
-    return render_template("admin/edit_movie.html", movie=movie)
+<button class="btn btn-warning">
+💾 Cập nhật
+</button>
+
+<a href="/admin/movies"
+class="btn btn-secondary">
+Quay lại
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}
