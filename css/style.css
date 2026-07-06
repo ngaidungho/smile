@@ -1,0 +1,94 @@
+body {
+    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    padding: 18px 0;
+}
+
+.navbar-brand {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.nav-link {
+    font-size: 17px;
+    margin-left: 12px;
+}
+
+.hero {
+    background: linear-gradient(120deg, #111827, #1f2937);
+    color: white;
+    padding: 70px 30px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 54px;
+    font-weight: bold;
+}
+
+.hero p {
+    font-size: 22px;
+    color: #d1d5db;
+}
+
+.movie-card {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: 0.3s;
+    height: 100%;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+}
+
+.movie-card img {
+    height: 430px;
+    object-fit: cover;
+}
+
+.movie-card .card-body {
+    padding: 24px;
+}
+
+.movie-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.btn {
+    border-radius: 30px;
+    padding: 10px 18px;
+    font-weight: bold;
+}
+
+.admin-card {
+    border-radius: 18px;
+    padding: 24px;
+}
+
+.table {
+    background: white;
+}
+
+.seat-btn {
+    width: 55px;
+    height: 45px;
+    border-radius: 14px;
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 60px;
+    padding: 30px;
+    background: #111827;
+    color: white;
+    text-align: center;
+}
