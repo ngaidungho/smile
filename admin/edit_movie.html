@@ -1,0 +1,54 @@
+@app.route("/admin/movies/edit/<int:movie_id>", methods=["GET", "POST"])
+def admin_edit_movie(movie_id):
+    if not is_admin():
+        flash("Bạn không có quyền truy cập!", "danger")
+        return redirect(url_for("home"))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM movies WHERE id=%s", (movie_id,))
+    movie = cursor.fetchone()
+
+    if movie is None:
+        cursor.close()
+        conn.close()
+        flash("Không tìm thấy phim!", "danger")
+        return redirect(url_for("admin_movies"))
+
+    if request.method == "POST":
+        title = request.form["title"]
+        genre = request.form["genre"]
+        duration = request.form["duration"]
+        release_date = request.form["release_date"]
+        description = request.form["description"]
+
+        poster_file = request.files.get("poster")
+
+        if poster_file and poster_file.filename != "":
+            poster_path = os.path.join(app.config["UPLOAD_FOLDER"], poster_file.filename)
+            poster_file.save(poster_path)
+            poster = "/" + poster_path.replace("\\", "/")
+        else:
+            poster = movie["poster"]
+
+        cursor.execute(
+            """
+            UPDATE movies
+            SET title=%s, genre=%s, duration=%s, release_date=%s, description=%s, poster=%s
+            WHERE id=%s
+            """,
+            (title, genre, duration, release_date, description, poster, movie_id)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash("Cập nhật phim thành công!", "success")
+        return redirect(url_for("admin_movies"))
+
+    cursor.close()
+    conn.close()
+
+    return render_template("admin/edit_movie.html", movie=movie)
