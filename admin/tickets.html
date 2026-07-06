@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🎫 Quản lý vé</h2>
+
+<table class="table table-bordered">
+
+<tr class="table-dark">
+
+<th>ID</th>
+<th>Người đặt</th>
+<th>Phim</th>
+<th>Suất</th>
+<th>Ghế</th>
+<th>Trạng thái</th>
+<th></th>
+
+</tr>
+
+{% for t in tickets %}
+
+<tr>
+
+<td>{{ t.id }}</td>
+
+<td>{{ t.fullname }}</td>
+
+<td>{{ t.title }}</td>
+
+<td>{{ t.showtime }}</td>
+
+<td>{{ t.seat }}</td>
+
+<td>{{ t.status }}</td>
+
+<td>
+
+<a
+href="/admin/tickets/delete/{{ t.id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Xóa vé?')">
+Xóa
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}
