@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-5">
+        <img src="{{ movie.poster }}" class="img-fluid rounded shadow">
+    </div>
+
+    <div class="col-md-7">
+
+        <h1>{{ movie.title }}</h1>
+
+        <p><b>Thể loại:</b> {{ movie.genre }}</p>
+        <p><b>Thời lượng:</b> {{ movie.duration }} phút</p>
+        <p><b>Ngày khởi chiếu:</b> {{ movie.release_date }}</p>
+
+        <hr>
+
+        <h4>Mô tả phim</h4>
+        <p>{{ movie.description }}</p>
+
+        <a href="/booking/{{ movie.id }}" class="btn btn-danger btn-lg">
+            Đặt vé ngay
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
