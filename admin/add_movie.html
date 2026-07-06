@@ -1,81 +1,76 @@
-@app.route("/admin/movies/add", methods=["GET", "POST"])
-def admin_add_movie():
-    if not is_admin():
-        flash("Bạn không có quyền truy cập!", "danger")
-        return redirect(url_for("home"))
+{% extends "base.html" %}
 
-    if request.method == "POST":
-        title = request.form["title"]
-        genre = request.form["genre"]
-        duration = request.form["duration"]
-        release_date = request.form["release_date"]
-        description = request.form["description"]
+{% block content %}
 
-        poster_file = request.files.get("poster")
+<div class="container mt-4">
 
-        if poster_file and poster_file.filename != "":
-            poster_path = os.path.join(app.config["UPLOAD_FOLDER"], poster_file.filename)
-            poster_file.save(poster_path)
-            poster = "/" + poster_path.replace("\\", "/")
-        else:
-            poster = "https://picsum.photos/400/600"
+<h2>➕ Thêm phim</h2>
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+<form method="POST">
 
-        cursor.execute(
-            """
-            INSERT INTO movies(title, genre, duration, release_date, description, poster)
-            VALUES(%s, %s, %s, %s, %s, %s)
-            """,
-            (title, genre, duration, release_date, description, poster)
-        )
+<div class="mb-3">
+<label>Tên phim</label>
+<input
+type="text"
+class="form-control"
+name="title"
+required>
+</div>
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+<div class="mb-3">
+<label>Thể loại</label>
+<input
+type="text"
+class="form-control"
+name="genre"
+required>
+</div>
 
-        flash("Thêm phim thành công!", "success")
-        return redirect(url_for("admin_movies"))
+<div class="mb-3">
+<label>Thời lượng</label>
+<input
+type="number"
+class="form-control"
+name="duration"
+required>
+</div>
 
-    return render_template("admin/add_movie.html")@app.route("/admin/movies/add", methods=["GET", "POST"])
-def admin_add_movie():
-    if not is_admin():
-        flash("Bạn không có quyền truy cập!", "danger")
-        return redirect(url_for("home"))
+<div class="mb-3">
+<label>Ngày khởi chiếu</label>
+<input
+type="date"
+class="form-control"
+name="release_date">
+</div>
 
-    if request.method == "POST":
-        title = request.form["title"]
-        genre = request.form["genre"]
-        duration = request.form["duration"]
-        release_date = request.form["release_date"]
-        description = request.form["description"]
+<div class="mb-3">
+<label>Mô tả</label>
+<textarea
+class="form-control"
+rows="5"
+name="description"></textarea>
+</div>
 
-        poster_file = request.files.get("poster")
+<div class="mb-3">
+<label>Link Poster</label>
+<input
+type="text"
+class="form-control"
+name="poster"
+placeholder="https://....jpg">
+</div>
 
-        if poster_file and poster_file.filename != "":
-            poster_path = os.path.join(app.config["UPLOAD_FOLDER"], poster_file.filename)
-            poster_file.save(poster_path)
-            poster = "/" + poster_path.replace("\\", "/")
-        else:
-            poster = "https://picsum.photos/400/600"
+<button class="btn btn-success">
+➕ Thêm phim
+</button>
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+<a href="/admin/movies"
+class="btn btn-secondary">
+Quay lại
+</a>
 
-        cursor.execute(
-            """
-            INSERT INTO movies(title, genre, duration, release_date, description, poster)
-            VALUES(%s, %s, %s, %s, %s, %s)
-            """,
-            (title, genre, duration, release_date, description, poster)
-        )
+</form>
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+</div>
 
-        flash("Thêm phim thành công!", "success")
-        return redirect(url_for("admin_movies"))
-
-    @app.route("/admin/movies/edit/<int:movie_id>", methods=["GET","POST"])
+{% endblock %}
