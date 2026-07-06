@@ -1,0 +1,81 @@
+@app.route("/admin/movies/add", methods=["GET", "POST"])
+def admin_add_movie():
+    if not is_admin():
+        flash("Bạn không có quyền truy cập!", "danger")
+        return redirect(url_for("home"))
+
+    if request.method == "POST":
+        title = request.form["title"]
+        genre = request.form["genre"]
+        duration = request.form["duration"]
+        release_date = request.form["release_date"]
+        description = request.form["description"]
+
+        poster_file = request.files.get("poster")
+
+        if poster_file and poster_file.filename != "":
+            poster_path = os.path.join(app.config["UPLOAD_FOLDER"], poster_file.filename)
+            poster_file.save(poster_path)
+            poster = "/" + poster_path.replace("\\", "/")
+        else:
+            poster = "https://picsum.photos/400/600"
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO movies(title, genre, duration, release_date, description, poster)
+            VALUES(%s, %s, %s, %s, %s, %s)
+            """,
+            (title, genre, duration, release_date, description, poster)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash("Thêm phim thành công!", "success")
+        return redirect(url_for("admin_movies"))
+
+    return render_template("admin/add_movie.html")@app.route("/admin/movies/add", methods=["GET", "POST"])
+def admin_add_movie():
+    if not is_admin():
+        flash("Bạn không có quyền truy cập!", "danger")
+        return redirect(url_for("home"))
+
+    if request.method == "POST":
+        title = request.form["title"]
+        genre = request.form["genre"]
+        duration = request.form["duration"]
+        release_date = request.form["release_date"]
+        description = request.form["description"]
+
+        poster_file = request.files.get("poster")
+
+        if poster_file and poster_file.filename != "":
+            poster_path = os.path.join(app.config["UPLOAD_FOLDER"], poster_file.filename)
+            poster_file.save(poster_path)
+            poster = "/" + poster_path.replace("\\", "/")
+        else:
+            poster = "https://picsum.photos/400/600"
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO movies(title, genre, duration, release_date, description, poster)
+            VALUES(%s, %s, %s, %s, %s, %s)
+            """,
+            (title, genre, duration, release_date, description, poster)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash("Thêm phim thành công!", "success")
+        return redirect(url_for("admin_movies"))
+
+    @app.route("/admin/movies/edit/<int:movie_id>", methods=["GET","POST"])
