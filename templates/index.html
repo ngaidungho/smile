@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero">
+    <h1>🎬 Movie Booking System</h1>
+    <p>Đặt vé xem phim nhanh chóng, tiện lợi và hiện đại</p>
+
+    <form action="/movies" method="GET" class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <input type="text"
+                   name="q"
+                   class="form-control form-control-lg"
+                   placeholder="Tìm kiếm phim hoặc thể loại...">
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-warning btn-lg w-100">
+                Tìm kiếm
+            </button>
+        </div>
+    </form>
+</div>
+
+<h2 class="mb-4">🔥 Phim đang chiếu</h2>
+
+<div class="row">
+
+    {% for movie in movies %}
+
+    <div class="col-md-3 mb-4">
+        <div class="card movie-card shadow">
+
+            <img src="{{ movie.poster }}" class="card-img-top">
+
+            <div class="card-body">
+
+                <div class="movie-title">
+                    {{ movie.title }}
+                </div>
+
+                <p class="mt-2">
+                    <b>Thể loại:</b> {{ movie.genre }}
+                </p>
+
+                <p>
+                    <b>Thời lượng:</b> {{ movie.duration }} phút
+                </p>
+
+                <a href="/movie/{{ movie.id }}" class="btn btn-outline-dark w-100 mb-2">
+                    Xem chi tiết
+                </a>
+
+                <a href="/booking/{{ movie.id }}" class="btn btn-primary w-100">
+                    Đặt vé
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<div class="footer">
+    <h5>🎬 Movie Booking System</h5>
+    <p>Website đặt vé xem phim - Bài tập lớn</p>
+</div>
+
+{% endblock %}
