@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🎬 Quản lý phim</h2>
+
+<a href="/admin/movies/add" class="btn btn-success mb-3">
++ Thêm phim
+</a>
+
+<table class="table table-bordered table-hover">
+
+<tr class="table-dark">
+<th>ID</th>
+<th>Poster</th>
+<th>Tên phim</th>
+<th>Thể loại</th>
+<th>Thời lượng</th>
+<th></th>
+</tr>
+
+{% for movie in movies %}
+
+<tr>
+
+<td>{{ movie.id }}</td>
+
+<td width="150">
+<img src="{{ movie.poster }}"
+width="120">
+</td>
+
+<td>{{ movie.title }}</td>
+
+<td>{{ movie.genre }}</td>
+
+<td>{{ movie.duration }} phút</td>
+
+<td width="200">
+
+<a class="btn btn-warning btn-sm"
+href="/admin/movies/edit/{{ movie.id }}">
+Sửa
+</a>
+
+<a class="btn btn-danger btn-sm"
+href="/admin/movies/delete/{{ movie.id }}"
+onclick="return confirm('Xóa phim?')">
+Xóa
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}
