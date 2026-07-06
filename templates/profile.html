@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>👤 Thông tin cá nhân</h2>
+
+<div class="card shadow p-4">
+
+    <p><b>Họ tên:</b> {{ user.fullname }}</p>
+
+    <p><b>Email:</b> {{ user.email }}</p>
+
+    <p><b>Số điện thoại:</b> {{ user.phone }}</p>
+
+    <p><b>Vai trò:</b> {{ user.role }}</p>
+
+    <a href="/change-password" class="btn btn-warning">
+        Đổi mật khẩu
+    </a>
+
+</div>
+
+{% endblock %}
