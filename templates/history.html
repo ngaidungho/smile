@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">🎟 Lịch sử đặt vé</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Mã vé</th>
+            <th>Tên phim</th>
+            <th>Suất chiếu</th>
+            <th>Ghế</th>
+            <th>Thời gian đặt</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.showtime }}</td>
+            <td>{{ ticket.seat }}</td>
+            <td>{{ ticket.booking_time }}</td>
+            <td>{{ ticket.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if tickets|length == 0 %}
+<div class="alert alert-info">
+    Bạn chưa đặt vé nào.
+</div>
+{% endif %}
+
+{% endblock %}
