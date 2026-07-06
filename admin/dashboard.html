@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">📊 Trang quản trị</h2>
+
+<div class="row">
+
+<div class="col-md-3">
+<div class="card bg-primary text-white shadow">
+<div class="card-body text-center">
+<h5>Phim</h5>
+<h1>{{ total_movies }}</h1>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-success text-white shadow">
+<div class="card-body text-center">
+<h5>Người dùng</h5>
+<h1>{{ total_users }}</h1>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-warning shadow">
+<div class="card-body text-center">
+<h5>Vé</h5>
+<h1>{{ total_tickets }}</h1>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-danger text-white shadow">
+<div class="card-body text-center">
+<h5>Đã đặt</h5>
+<h1>{{ total_booked }}</h1>
+</div>
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<div class="row mt-4">
+
+<div class="col-md-4">
+<a href="/admin/movies" class="btn btn-primary w-100">
+🎬 Quản lý phim
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/admin/users" class="btn btn-success w-100">
+👤 Quản lý người dùng
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/admin/tickets" class="btn btn-danger w-100">
+🎫 Quản lý vé
+</a>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
