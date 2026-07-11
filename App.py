@@ -4,9 +4,10 @@ import pymysql
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config
 
-app = Flask(__name__)
+app = Flask("movie_booking")
 app.config.from_object(Config)
 app.secret_key = Config.SECRET_KEY
+
 UPLOAD_FOLDER = "static/images"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
